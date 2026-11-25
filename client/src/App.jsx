@@ -15,10 +15,6 @@ function App() {
   const [count, setCount] = useState(0)
   const [registered, setRegistered] = useState(false)
 
-  // after successful signup show a new blank page
-  if (registered) {
-    return <div></div>
-  }
   
   const styles = {
     main: {
@@ -28,6 +24,15 @@ function App() {
       color: '#5C6AC4'
     },
   };
+
+  // after successful signup show a new page with all students
+  if (registered) {
+    return (
+      <div style={styles.main}>
+        <Students />
+      </div>
+    )
+  }
 
   return (
     <div style={styles.main}>
