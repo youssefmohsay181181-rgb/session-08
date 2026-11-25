@@ -8,9 +8,17 @@
 
 import React from 'react';
 import { useState } from 'react'
+import Signup from './Signup.jsx'
+import Students from './Students.jsx'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [registered, setRegistered] = useState(false)
+
+  // after successful signup show a new blank page
+  if (registered) {
+    return <div></div>
+  }
   
   const styles = {
     main: {
@@ -29,6 +37,8 @@ function App() {
           count {count}
         </button>
       </div>
+      <Signup onSuccess={() => setRegistered(true)} />
+      <Students />
     </div>
   )
 }

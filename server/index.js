@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const mongoose = require("mongoose");
 const Student = require("./models/Student");
@@ -42,6 +43,31 @@ app.get('/addstudent',  async (req, res) => {
   const student = new Student({ age: 21, department: '1' });
   await student.save();
   res.send('Hello world!');
+});
+
+// get all students (without passwords)
+app.get('/api/students', async (req, res) => {
+  const students = await Student.find().select('-password');
+  res.json(students);
+});
+
+// student signup: create and save a new student
+app.post('/api/students', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    const student = new Student({ name, email, password });
+    await student.save();
+    res.status(201).json({ _id: student._id, name: student.name, email: student.email });
+  } catch (err) {
+    if (err.code === 11000) {
+      return res.status(400).json({ message: 'Email already exists' });
+    }
+    if (err.name === 'ValidationError') {
+      const message = Object.values(err.errors).map(e => e.message).join(', ');
+      return res.status(400).json({ message });
+    }
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
 app.get('/', (req, res) => {
