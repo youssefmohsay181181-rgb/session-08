@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+   <h1>Courses</h1>
+
+<ul>
+    <% for (let i = 0; i < courses.length; i++) { %>
+
+       
+            <li>
+            <b><%= courses[i].course_name + " - " + courses[i].course_code %></b>
+        </li>
+        
+
+    <% } %>
+</ul>
+</body>
+</html>
